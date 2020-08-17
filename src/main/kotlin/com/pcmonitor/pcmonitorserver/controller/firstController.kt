@@ -1,6 +1,6 @@
 package com.pcmonitor.pcmonitorserver.controller
 
-import com.pcmonitor.pcmonitorserver.repository.PersonRepository
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,10 +16,4 @@ class HelloController {
     @RequestMapping(value = ["/hello"], method = [(RequestMethod.GET)])
     fun getHelloWordMessage(): ResponseEntity<String> =
             ResponseEntity.ok("Hello World")
-
-    @Autowired
-    lateinit var personRepository: PersonRepository
-
-    @GetMapping("/persons")
-    fun getPersons() = personRepository.findAll()
 }
