@@ -1,5 +1,6 @@
-package com.pcmonitor.pcmonitorserver.controller
+package com.pcmonitor.pcmonitorserver.config
 
+import JwtAuthTokenFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,8 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-import com.pcmonitor.pcmonitorserver.controller.JwtAuthEntryPoint
-
+import com.pcmonitor.pcmonitorserver.controller.jwt.JwtAuthEntryPoint
+import com.pcmonitor.pcmonitorserver.services.UserDetailsServiceImpl
 
 
 @Configuration
@@ -22,8 +23,8 @@ import com.pcmonitor.pcmonitorserver.controller.JwtAuthEntryPoint
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
-//    @Autowired
-//    internal var userDetailsService: UserDetailsServiceImpl? = null
+    @Autowired
+    internal var userDetailsService: UserDetailsServiceImpl? = null
 
     @Autowired
     private val unauthorizedHandler: JwtAuthEntryPoint? = null
@@ -38,12 +39,12 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return JwtAuthTokenFilter()
     }
 
-//    @Throws(Exception::class)
-//    override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
-//        authenticationManagerBuilder
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(bCryptPasswordEncoder())
-//    }
+    @Throws(Exception::class)
+    override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
+        authenticationManagerBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder())
+    }
 
     @Bean
     @Throws(Exception::class)

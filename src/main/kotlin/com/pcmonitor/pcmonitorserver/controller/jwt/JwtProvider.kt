@@ -1,14 +1,11 @@
-package com.pcmonitor.pcmonitorserver.controller
+package com.pcmonitor.pcmonitorserver.controller.jwt
 
 import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import com.pcmonitor.pcmonitorserver.repository.UserRepository
 import java.util.Date
 
@@ -25,15 +22,15 @@ public class JwtProvider {
     lateinit var jwtSecret: String
 
     @Value("\${assm.app.jwtExpiration}")
-    var jwtExpiration:Int?=0
+    var jwtExpiration: Int? = 0
 
-    fun generateJwtToken(username: String): String {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(Date())
-                .setExpiration(Date((Date()).getTime() + jwtExpiration!! * 1000))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact()
+    fun generateJwtToken(email: String): String {
+                return Jwts.builder()
+                    .setSubject(email)
+                    .setIssuedAt(Date())
+                    .setExpiration(Date((Date()).getTime() + jwtExpiration!! * 1000))
+                    .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                    .compact()
     }
 
     fun validateJwtToken(authToken: String): Boolean {

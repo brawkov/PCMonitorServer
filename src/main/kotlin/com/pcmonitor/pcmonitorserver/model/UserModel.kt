@@ -7,18 +7,11 @@ import javax.persistence.*
 data class UserModel(
 
         @Id
-//        @GeneratedValue(strategy = GenerationType.AUTO)
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long? = 0,
 
-        @Column(name = "first_name")
-        var firstName: String? = null,
-
-        @Column(name = "second_name")
-        var secondName: String? = null,
-
-        @Column(name = "last_name")
-        var lastName: String? = null,
+        @Column(name="username")
+        var username: String?=null,
 
         @Column(name = "email")
         var email: String? = null,

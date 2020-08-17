@@ -10,7 +10,9 @@ import javax.transaction.Transactional
 
 @Repository
 interface UserRepository: JpaRepository<UserModel, Long> {
-//interface UserRepository: CrudRepository<UserModel, Long> {
+    fun existsByUsername(@Param("username") username: String): Boolean
+
+    fun findByUsername(@Param("username") username: String): Optional<UserModel>
 
     fun existsByEmail(@Param("email") email: String): Boolean
 
