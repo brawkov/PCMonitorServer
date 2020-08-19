@@ -26,11 +26,9 @@ class JwtAuthTokenFilter : OncePerRequestFilter() {
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         try {
-
             val jwt = getJwt(request)
             if (jwt != null && tokenProvider!!.validateJwtToken(jwt)) {
                 val username = tokenProvider.getUserNameFromJwtToken(jwt)
-                println("Filter $username}")
                 val userDetails = userDetailsService!!.loadUserByUsername(username)
                 val authentication = UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities())
@@ -49,7 +47,7 @@ class JwtAuthTokenFilter : OncePerRequestFilter() {
         val authHeader = request.getHeader("Authorization")
 
         return if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            authHeader.replace("Bearer ", "")
+           authHeader.replace("Bearer ", "")
         } else null
     }
 

@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -46,15 +47,20 @@ class AuthController() {
 
         if (userCandidate.isPresent) {
             val user: UserModel = userCandidate.get()
-            val authentication = authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password ))
-            SecurityContextHolder.getContext().setAuthentication(authentication)
+            try {
+                val authentication = authenticationManager.authenticate(
+                        UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password ))
+            }catch (e:Exception){
+                return ResponseEntity(mapOf("message" to "Неверный Email или пароль"),
+                        HttpStatus.UNAUTHORIZED)
+            }
 
-            val jwt: String = jwtProvider.generateJwtToken(user.email!!)//, user.username!!)
+//            SecurityContextHolder.getContext().setAuthentication(authentication)
+            println("dsfsdf")
+            val jwt: String = jwtProvider.generateJwtToken(user.email!!)
             return ResponseEntity.ok(JwtResponse(jwt, user.email, user.username))
         } else {
-            return ResponseEntity(ResponseMessage("User not found!"),
-                    HttpStatus.BAD_REQUEST)
+            return ResponseEntity(mapOf("message" to "Неверный Email или пароль"),HttpStatus.UNAUTHORIZED)
         }
     }
 

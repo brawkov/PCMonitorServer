@@ -11,7 +11,7 @@ import java.util.Date
 
 
 @Component
-public class JwtProvider {
+class JwtProvider {
 
     private val logger: Logger = LoggerFactory.getLogger(JwtProvider::class.java)
 
