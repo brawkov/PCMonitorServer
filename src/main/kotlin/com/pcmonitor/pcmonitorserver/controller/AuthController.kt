@@ -12,11 +12,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.util.MultiValueMap
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -40,60 +42,72 @@ class AuthController() {
 
 
     @PostMapping("/signin")
-    fun authenticateUser(@RequestBody loginRequest: UserModel): ResponseEntity<*> {
-
-
-        val userCandidate: Optional <UserModel> = userRepository.findByEmail(loginRequest.email!!)
-
+    fun authenticateUser(@RequestBody @Validated loginRequest: UserModel): ResponseEntity<*> {
+        val userCandidate: Optional<UserModel> = userRepository.findByEmail(loginRequest.email!!)
         if (userCandidate.isPresent) {
             val user: UserModel = userCandidate.get()
+            val authentication: Authentication
+            //Проверка подлинности пароля
             try {
-                val authentication = authenticationManager.authenticate(
-                        UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password ))
-            }catch (e:Exception){
+                authentication = authenticationManager.authenticate(
+                        UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password))
+            } catch (e: Exception) {
                 return ResponseEntity(mapOf("message" to "Неверный Email или пароль"),
                         HttpStatus.UNAUTHORIZED)
             }
-
-//            SecurityContextHolder.getContext().setAuthentication(authentication)
-            println("dsfsdf")
+            SecurityContextHolder.getContext().setAuthentication(authentication)
             val jwt: String = jwtProvider.generateJwtToken(user.email!!)
             return ResponseEntity.ok(JwtResponse(jwt, user.email, user.username))
+
         } else {
-            return ResponseEntity(mapOf("message" to "Неверный Email или пароль"),HttpStatus.UNAUTHORIZED)
+            return ResponseEntity(mapOf("message" to "Неверный Email или пароль"), HttpStatus.UNAUTHORIZED)
         }
     }
 
     @PostMapping("/signup")
-    fun registerUser( @RequestBody newUser: UserModel): ResponseEntity<*> {
+    fun registerUser(@RequestBody newUser: UserModel): ResponseEntity<*> {
 
-        val userCandidate: Optional <UserModel> = userRepository.findByEmail(newUser.email!!)
+        val errorMessage: MutableMap<String, String> = mutableMapOf()
+        val userCandidate: Optional<UserModel> = userRepository.findByEmail(newUser.email!!)
 
-        if (!userCandidate.isPresent) {
-            if (usernameExists(newUser.email!!)) {
-                return ResponseEntity(ResponseMessage("Username is already taken!"),
-                        HttpStatus.BAD_REQUEST)
-            } else if (emailExists(newUser.email!!)) {
-                return ResponseEntity(ResponseMessage("Email is already in use!"),
-                        HttpStatus.BAD_REQUEST)
-            }
-
-            // Creating user's account
-            val user = UserModel(
-                    0,
-                    newUser.username!!,
-                    newUser.email!!,
-                    encoder.encode(newUser.password),
-                    true
-            )
-
-            userRepository.save(user)
-
-            return ResponseEntity(ResponseMessage("User registered successfully!"), HttpStatus.OK)
-        } else {
-            return ResponseEntity(ResponseMessage("User already exists!"),
-                    HttpStatus.BAD_REQUEST)
+        if (!emailExists(newUser.email!!)) {
+            errorMessage += "messageEmailExists" to "Данный Email уже зарегестрироан!"
         }
+        if (!usernameExists(newUser.email!!)) {
+            errorMessage += "messageUsernameExists" to "Имя пользователя уже занято!"
+        }
+        return ResponseEntity(errorMessage,
+                        HttpStatus.BAD_REQUEST)
+
+//        if (!userCandidate.isPresent) {
+//            if (usernameExists(newUser.username!!)) {
+//                return ResponseEntity(mapOf("message1" to "Имя пользователя уже занято!", "message1" to "Данный Email уже зарегестрироан!"),
+//                        HttpStatus.BAD_REQUEST)
+//            } else if (emailExists(newUser.email!!)) {
+//                return ResponseEntity(ResponseMessage("Данный Email уже зарегестрироан!"),
+//                        HttpStatus.BAD_REQUEST)
+//            }
+//
+//            // Creating user's account
+//            val user = UserModel(
+//                    0,
+//                    newUser.username!!,
+//                    newUser.email!!,
+//                    encoder.encode(newUser.password),
+//                    true
+//            )
+//
+//            userRepository.save(user)
+//
+//            return ResponseEntity(ResponseMessage("User registered successfully!"), HttpStatus.OK)
+//        } else {
+//
+//
+////            return ResponseEntity(ResponseMessage("User already exists!"),
+////                    HttpStatus.BAD_REQUEST)
+//            return ResponseEntity(mapOf("message." to "Имя пользователя уже занято!", "message2" to "Данный Email уже зарегестрироан!"),
+//                    HttpStatus.BAD_REQUEST)
+//        }
     }
 
     private fun emailExists(email: String): Boolean {

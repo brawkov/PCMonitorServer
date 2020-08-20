@@ -22,6 +22,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin ("*")
 class TaskController {
 
     @Autowired

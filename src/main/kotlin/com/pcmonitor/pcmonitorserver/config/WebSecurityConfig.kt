@@ -14,8 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-import com.pcmonitor.pcmonitorserver.controller.jwt.JwtAuthEntryPoint
 import com.pcmonitor.pcmonitorserver.services.UserDetailsServiceImpl
+import org.springframework.security.web.AuthenticationEntryPoint
 
 
 @Configuration
@@ -25,9 +25,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
     internal var userDetailsService: UserDetailsServiceImpl? = null
-
-    @Autowired
-    private val unauthorizedHandler: JwtAuthEntryPoint? = null
 
     @Bean
     fun bCryptPasswordEncoder(): BCryptPasswordEncoder {
@@ -58,7 +55,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)

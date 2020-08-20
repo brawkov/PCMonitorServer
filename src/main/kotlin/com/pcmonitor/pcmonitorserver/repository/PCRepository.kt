@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PCRepository : JpaRepository<PCModel, Long> {
-    fun findByPcId(@Param("pcId") pcId: Long): PCModel
+    fun findByPcId(@Param("pcId") pcId: Long): Optional<PCModel>
 
     fun findByPcGroupId(@Param("pcGroupId") pcGroupId: Long): List<PcIdAndNameProjection>
 

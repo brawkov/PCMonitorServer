@@ -30,6 +30,7 @@ class PCGroupController {
 
 
     @GetMapping("/group")
+    @CrossOrigin ("*")
     fun getlistGroup(): ResponseEntity<*> {
 
         class GroupWithPC(var groupId: Long, var groupName: String, var PC: List<PCRepository.PcIdAndNameProjection>)

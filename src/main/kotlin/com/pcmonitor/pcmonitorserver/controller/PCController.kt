@@ -27,10 +27,12 @@ class PCController {
 
 
     @GetMapping("/pc")
+    @CrossOrigin ("*")
     fun getPcById(@RequestParam paramRequest: Map<String, String>): ResponseEntity<*> {
         try {
             val pcId: Long = (paramRequest.get("pcId")!!.toLong())
-            val PC: PCModel = pcRepository.findByPcId(pcId)
+            val PC: Optional<PCModel> = pcRepository.findByPcId(pcId)
+//            if(PC.isPresent)
             return ResponseEntity.ok(PC)
         }
         catch (e: Exception) {
