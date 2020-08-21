@@ -1,6 +1,6 @@
 package com.pcmonitor.pcmonitorserver.config
 
-import JwtAuthTokenFilter
+import com.pcmonitor.pcmonitorserver.controllers.jwt.JwtAuthTokenFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 import com.pcmonitor.pcmonitorserver.services.UserDetailsServiceImpl
-import org.springframework.security.web.AuthenticationEntryPoint
 
 
 @Configuration

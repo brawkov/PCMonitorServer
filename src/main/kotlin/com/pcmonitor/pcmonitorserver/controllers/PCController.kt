@@ -1,15 +1,13 @@
-package com.pcmonitor.pcmonitorserver.controller
+package com.pcmonitor.pcmonitorserver.controllers
 
 
-import com.pcmonitor.pcmonitorserver.ResponseMessage
+
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import com.pcmonitor.pcmonitorserver.model.PCModel
-import com.pcmonitor.pcmonitorserver.repository.PCRepository
-import javassist.NotFoundException
+import com.pcmonitor.pcmonitorserver.models.PCModel
+import com.pcmonitor.pcmonitorserver.repositories.PCRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -18,6 +16,7 @@ import java.util.*
 
 
 @RestController
+@CrossOrigin(origins = ["*"], maxAge = 3600)
 @RequestMapping("/api")
 @PreAuthorize("hasRole('ROLE_USER')")
 class PCController {
@@ -27,16 +26,15 @@ class PCController {
 
 
     @GetMapping("/pc")
-    @CrossOrigin ("*")
     fun getPcById(@RequestParam paramRequest: Map<String, String>): ResponseEntity<*> {
         try {
             val pcId: Long = (paramRequest.get("pcId")!!.toLong())
-            val PC: Optional<PCModel> = pcRepository.findByPcId(pcId)
+            val PC: PCModel = pcRepository.findByPcId(pcId)
 //            if(PC.isPresent)
             return ResponseEntity.ok(PC)
         }
         catch (e: Exception) {
-            return ResponseEntity(ResponseMessage("Устройство не найдено"),
+            return ResponseEntity(mapOf("message" to "Устройство не найдено"),
                         HttpStatus.NOT_FOUND)
         }
     }

@@ -1,16 +1,13 @@
-package com.pcmonitor.pcmonitorserver.controller
+package com.pcmonitor.pcmonitorserver.controllers
 
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
-import com.pcmonitor.pcmonitorserver.repository.PCGroupRepository
-import com.pcmonitor.pcmonitorserver.model.PCGroupModel
+import com.pcmonitor.pcmonitorserver.repositories.PCGroupRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import java.util.*
 
 
 @RestController

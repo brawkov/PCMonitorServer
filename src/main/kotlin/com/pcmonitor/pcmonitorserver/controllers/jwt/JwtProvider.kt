@@ -1,4 +1,4 @@
-package com.pcmonitor.pcmonitorserver.controller.jwt
+package com.pcmonitor.pcmonitorserver.controllers.jwt
 
 import io.jsonwebtoken.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -6,7 +6,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import com.pcmonitor.pcmonitorserver.repository.UserRepository
+import com.pcmonitor.pcmonitorserver.repositories.UserRepository
 import java.util.Date
 
 

@@ -1,4 +1,4 @@
-package com.pcmonitor.pcmonitorserver.model
+package com.pcmonitor.pcmonitorserver.models
 
 import javax.persistence.*
 

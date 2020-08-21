@@ -1,4 +1,5 @@
-package com.pcmonitor.pcmonitorserver.model
+package com.pcmonitor.pcmonitorserver.models
+
 
 import javax.persistence.*
 
@@ -10,14 +11,14 @@ data class UserModel(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long? = 0,
 
-        @Column(name="username")
-        var username: String?=null,
+        @Column(name = "username")
+        var username: String? = null,
 
         @Column(name = "email")
-        var email: String? = null,
+        var email: String,
 
         @Column(name = "password")
-        var password: String? = null,
+        var password: String,
 
         @Column(name = "enabled")
         var enabled: Boolean = false

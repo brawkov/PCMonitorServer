@@ -1,4 +1,4 @@
-package com.pcmonitor.pcmonitorserver.model
+package com.pcmonitor.pcmonitorserver.models
 
 import org.springframework.data.rest.core.config.Projection
 import javax.persistence.*
