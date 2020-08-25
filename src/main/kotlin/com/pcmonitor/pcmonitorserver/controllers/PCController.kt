@@ -33,7 +33,7 @@ class PCController {
 //            if(PC.isPresent)
             return ResponseEntity.ok(PC)
         }
-        catch (e: Exception) {
+        catch (error: Exception) {
             return ResponseEntity(mapOf("message" to "Устройство не найдено"),
                         HttpStatus.NOT_FOUND)
         }
