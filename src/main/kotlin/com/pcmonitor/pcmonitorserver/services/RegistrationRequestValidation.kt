@@ -44,7 +44,7 @@ class RegistrationRequestValidation : Validator {
         //Если ошибок нет то проверяем на существование пользователя
         if(!errors.hasErrors()){
             if (userRepository.existsByEmail(newUser.email)) {
-                errors.rejectValue("email", "email.exists", "Данный Email уже зарегестрироан!")
+                errors.rejectValue("email", "email.exists", "Данный Email уже зарегестрирован!")
             }
             if (userRepository.existsByUsername(newUser.username!!)) {
                 errors.rejectValue("username", "username.exists", "Имя пользователя уже занято!")

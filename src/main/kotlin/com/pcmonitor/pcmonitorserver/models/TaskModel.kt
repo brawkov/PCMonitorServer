@@ -11,6 +11,9 @@ data class TaskModel(
         @Column(name = "task_id")
         val taskId: Long? = 0,
 
+        @Column(name = "task_pid")
+        var taskPid: Int,
+
         @Column(name = "task_name")
         var taskName: String,
 
@@ -18,7 +21,7 @@ data class TaskModel(
         var taskUser: String,
 
         @Column(name = "task_cpu_load")
-        var taskCpuLoad: Short? = 0,
+        var taskCpuLoad: Float? = 0F,
 
         @Column(name = "task_ram")
         var taskRam: Int = 1,

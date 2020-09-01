@@ -24,28 +24,31 @@ data class PCModel(
         @Column(name = "pcActive")
         var pcActive: Boolean = false,
 
-        @Column(name = "pc_cpu_cores_inf")
-        var pcCpuCoresInf: Short? = 0,
+        @Column(name = "pc_cpu_phys_cores_inf")
+        var pcCpuPhysCoresInf: Short? = 0,
+
+        @Column(name = "pc_cpu_logic_cores_inf")
+        var pcCpuLogicCoresInf: Short? = 0,
 
         @Column(name = "pc_ram_inf")
-        var pcRamInf: Short? = 0,
+        var pcRamInf: Float? = 0F,
 
         @Column(name = "pc_rom_inf")
-        var pcRomInf: Short? = 0,
+        var pcRomInf: Float? = 0F,
 
         @Column(name = "pc_cpu_frequency")
-        var pcCpuFrequency: Short? = 0,
+        var pcCpuFrequency: Float? = 0F,
 
         @Column(name = "pc_cpu_load")
-        var pcCpuLoad: Short? = 0,
+        var pcCpuLoad: Float? = 0F,
 
         @Column(name = "pc_ram_state")
-        var pcRamState: Short? = 0,
+        var pcRamState: Float? = 0F,
 
         @Column(name = "pc_rom_state")
-        var pc_rom_state: Short? = 0,
+        var pcRomState: Float? = 0F,
 
         @Column(name = "pc_time_work")
-        var pcTimeWork: Int? = 0
+        var pcTimeWork: Long? = 0
 
 )

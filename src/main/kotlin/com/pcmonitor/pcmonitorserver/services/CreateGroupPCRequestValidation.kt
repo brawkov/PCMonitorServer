@@ -25,6 +25,7 @@ class CreateGroupPCRequestValidation : Validator {
         ValidationUtils.rejectIfEmpty(errors, "groupName", "groupName.empty", "Введите звание группы!")
 
         val newPCGroup: PCGroupController.CreateGroupWithPC = target as PCGroupController.CreateGroupWithPC
+//        TODO("Проверка на то что число пришло")
         //Если ошибок нет и id группы отсутствует то проверяем на существование группы
         if (!errors.hasErrors()) {
                 if (pcGroupRepository.existsByGroupName(newPCGroup.groupName)) {
